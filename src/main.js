@@ -7,7 +7,7 @@ import execa from "execa";
 import Listr from "listr";
 import { projectInstall } from "pkg-install";
 
-const access = promisify(fs.access);
+const access = promisify(fs.access); //for accessing files
 const copy = promisify(ncp);
 
 async function copyTemplateFiles(options) {
@@ -29,14 +29,17 @@ async function initGit(options) {
 export async function createProject(options) {
   options = {
     ...options,
-    targetDirectory: options.targetDirectory || process.cwd(),
+    targetDirectory: options.projectPath,
   };
+
+  console.log("JOO " + new URL(import.meta.url).pathname);
 
   const templateDir = path.resolve(
     new URL(import.meta.url).pathname,
     "../../templates",
-    options.template
+    "javascript"
   );
+
   options.templateDirectory = templateDir;
 
   try {

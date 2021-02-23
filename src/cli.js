@@ -1,9 +1,11 @@
 import arg from "arg";
 import chalk from "chalk";
 import inquirer from "inquirer";
+import path from "path";
 import { createProject } from "./main";
 import fs from "fs";
 
+//inputs from CLI
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(
     {
@@ -25,6 +27,7 @@ function parseArgumentsIntoOptions(rawArgs) {
     runInstall: args["--install"] || false,
   };
 }
+
 async function promptForOptions(options) {
   const questions = [];
 
@@ -46,7 +49,9 @@ async function promptForOptions(options) {
     });
   }
 
+  //wait for user to answer above questions
   const answers = await inquirer.prompt(questions);
+
   return {
     ...options,
     git: options.git || answers.git,
@@ -61,14 +66,18 @@ function createProjectDirectory(options) {
       `%s Directory with name ${options.projectName} already exists!`
     );
   }
+  return {
+    ...options,
+    projectPath: `${process.cwd()}/${options.projectName}`,
+  };
 }
 
 export async function cli(args) {
   try {
     let options = parseArgumentsIntoOptions(args);
-    createProjectDirectory(options);
+    options = createProjectDirectory(options);
     options = await promptForOptions(options);
-    //await createProject(options)
+    await createProject(options);
   } catch (error) {
     console.error(error.message, chalk.red.bold("ERROR"));
   }
