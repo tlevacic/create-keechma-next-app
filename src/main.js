@@ -36,7 +36,7 @@ export async function createProject(options) {
   const templateDir = path.resolve(
     new URL(import.meta.url).pathname,
     "../../templates",
-    "keechma-next-web-template"
+    options.template
   );
 
   options.templateDirectory = templateDir;
@@ -44,7 +44,7 @@ export async function createProject(options) {
   try {
     await access(templateDir, fs.constants.R_OK);
   } catch (err) {
-    console.error("%s Template doesn't exists!", chalk.red.bold("ERROR"));
+    console.error("Template doesn't exists!", chalk.red.bold("ERROR"));
     process.exit(1);
   }
 
@@ -68,6 +68,19 @@ export async function createProject(options) {
   ]);
 
   await tasks.run();
-  console.log("%s Project ready", chalk.green.bold("DONE"));
+
+  var link = null;
+
+  console.log(
+    chalk.green.bold(`${options.projectName} successfully initialized.`)
+  );
+  if (options.template === "keechma-next-web-template") {
+    link = "https://github.com/VeryBigThings/keechma-next-web-template";
+  } else {
+    link = "https://github.com/VeryBigThings/keechma-next-mobile-skeleton";
+  }
+
+  console.log(`More info: ${link}`);
+  console.log(chalk.white.bold("Happy coding!"));
   return true;
 }

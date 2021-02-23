@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "app",
+    "slug": "app",
+    "privacy": "unlisted",
+    "entryPoint": "./app/index.js",
+    "platforms": [
+      "ios"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.keechma-next.app",
+      "buildNumber": "0.0.1",
+      "supportsTablet": false
+    }
+  }
+}

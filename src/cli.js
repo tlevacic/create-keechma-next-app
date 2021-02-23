@@ -4,6 +4,18 @@ import inquirer from "inquirer";
 import path from "path";
 import { createProject } from "./main";
 import fs from "fs";
+import figlet from "figlet";
+
+function getTemplateDirectoryName(template) {
+  switch (template) {
+    case "Web":
+      return "keechma-next-web-template";
+    case "Mobile":
+      return "keechma-next-mobile-skeleton";
+    default:
+      break;
+  }
+}
 
 //inputs from CLI
 function parseArgumentsIntoOptions(rawArgs) {
@@ -34,6 +46,15 @@ async function promptForOptions(options) {
     );
   }
 
+  if (!options.template) {
+    questions.push({
+      type: "list",
+      name: "template",
+      message: "Please choose which project template to use",
+      choices: ["Web", "Mobile"],
+    });
+  }
+
   if (!options.git) {
     questions.push({
       type: "confirm",
@@ -49,6 +70,7 @@ async function promptForOptions(options) {
   return {
     ...options,
     git: options.git || answers.git,
+    template: getTemplateDirectoryName(answers.template) || null,
   };
 }
 
@@ -70,6 +92,11 @@ export async function cli(args) {
   try {
     let options = parseArgumentsIntoOptions(args);
     options = createProjectDirectory(options);
+    console.log(
+      chalk.yellow(
+        figlet.textSync("Keechma Next", { horizontalLayout: "full" })
+      )
+    );
     options = await promptForOptions(options);
     await createProject(options);
   } catch (error) {

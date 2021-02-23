@@ -1,0 +1,11 @@
+;; shadow-cljs configuration
+{:deps true
+
+ :builds
+ {:app
+  {:target :react-native
+   :init-fn app.app/init
+   :output-dir "app"
+   :devtools {:autoload true
+              ;;:reload-strategy :full
+              :preloads [shadow.expo.keep-awake]}}}}
