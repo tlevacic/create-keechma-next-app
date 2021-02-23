@@ -1,0 +1,53 @@
+{
+  "name": "dev-example-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "init-hooks": "git config core.hooksPath .githooks",
+    "sc": "shadow-cljs",
+    "server": "shadow-cljs stop && shadow-cljs start",
+    "start": "yarn postcss && shadow-cljs watch app",
+    "cards": "yarn postcss && shadow-cljs watch workspaces",
+    "build": "yarn clean && yarn release-css && shadow-cljs release app",
+    "test": "shadow-cljs watch tests",
+    "e2e": "shadow-cljs compile e2e && node out/e2e.js",
+    "report": "shadow-cljs run shadow.cljs.build-report app report.html",
+    "lint": "clj-kondo --lint src",
+    "format": "zprint-clj --hang -i \"./src/**/*.{clj,cljs,cljc,edn}\" -o ./ && zprint-clj -i \"./*.edn\" -o ./",
+    "clean": "rimraf public/js && rm -rf .shadow-cljs",
+    "postcss": "postcss src/app/ui/style.css -o public/css/style.css",
+    "postcss:watch": "postcss src/app/ui/style.css -o public/css/style.css -w",
+    "purge-css": "purgecss -c purgecss.config.js -o public/css",
+    "release-css": "yarn postcss && yarn purge-css"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^6.11.0",
+    "@testing-library/react": "^9.4.0",
+    "clj-kondo": "2020.01.13",
+    "highlight.js": "9.18.0",
+    "jsdom": "^16.0.1",
+    "jsdom-global": "^3.0.2",
+    "marked": "^0.8.0",
+    "postcss-cli": "^8.3.1",
+    "postcss-import": "^12.0.1",
+    "purgecss": "^2.3.0",
+    "rimraf": "~3.0.0",
+    "serve-handler": "~6.1.2",
+    "shadow-cljs": "~2.8.83",
+    "taiko": "~1.0.3",
+    "taiko-diagnostics": "~0.4.0",
+    "tailwindcss": "^2.0.3",
+    "zprint-clj": "~0.8.0"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.2.4",
+    "create-react-class": "~15.6.3",
+    "postcss": "^8.2.5",
+    "react": "~16.13.1",
+    "react-dom": "~16.13.1",
+    "react-grid-layout": "^0.16.6",
+    "react-icons": "^2.2.7",
+    "react-refresh": "0.8.1",
+    "reakit": "^0.11.1"
+  }
+}

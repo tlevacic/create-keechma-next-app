@@ -1,0 +1,27 @@
+{:builds
+ {:app
+  {:asset-path "/js",
+   :dev       {:compiler-options {:external-config {:guardrails {}}
+                                  :closure-defines {'goog.DEBUG true}}}
+   :devtools {},
+   :modules {:main {:init-fn app.core/main}},
+   :output-dir "public/js",
+   :target :browser},
+  :e2e {:ns-regexp "e2e.*", :output-to "out/e2e.js", :target :node-test},
+  :tests
+  {:devtools {:http-port 8021, :http-root "public/js/test"},
+   :target :browser-test,
+   :test-dir "public/js/test"},
+  :workspaces
+  {:asset-path "/js/workspaces",
+   :devtools
+   {:after-load nubank.workspaces.core/after-load,
+    :http-port 3655,
+    :http-root "public",
+    :loader-mode :eval},
+   :modules {:main {:entries [app.workspaces.main]}},
+   :output-dir "public/js/workspaces",
+   :target :browser}},
+ :deps true,
+ :dev-http {3000 "public"},
+ :nrepl {:port 3333}}

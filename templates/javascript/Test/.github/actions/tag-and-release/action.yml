@@ -1,0 +1,19 @@
+# action.yml
+name: 'Tag/Release on Push Action'
+description: 'Creates a Tag/Release on Push. Generates Release Notes. Customizable with Pull Request Labels'
+author: 'rymndhng'
+inputs:
+  bump_version_scheme:
+    description: 'The bumping scheme to use by default. One of minor|major|patch|norelease'
+    required: true
+outputs:
+  tag_name:
+    description: 'Tag of released version'
+  version:
+    description: 'Version of release'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: 'award'
+  color: 'blue'
