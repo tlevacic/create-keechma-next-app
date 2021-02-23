@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "keywords": [],
+  "keywords": ["Keechma Next", "Keechma", "CLI", "React", "Expo", "React Native"],
   "license": "ISC",
   "dependencies": {
     "arg": "^5.0.0",
