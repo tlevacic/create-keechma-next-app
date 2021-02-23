@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# To enable this hook, rename this file to "pre-commit".
+
+if git rev-parse --verify HEAD >/dev/null 2>&1
+then
+    against=HEAD
+else
+    # Initial commit: diff against an empty tree object
+    against=$(git hash-object -t tree /dev/null)
+fi
+
+if !(git diff --cached --name-only --diff-filter=AM $against | grep -E '.clj[cs]?$' | xargs npx clj-kondo --lint)
+then
+    echo
+    echo "Error: new clj-kondo errors found. Please fix them and retry the commit."
+    exit 1
+fi
+
+exec npx zprint-clj --hang -i "./src/**/*.{clj,cljs,cljc,edn}" -o ./ && zprint-clj -i "./*.edn" -o ./
+exec git diff-index --check --cached $against --

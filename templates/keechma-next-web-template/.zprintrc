@@ -1,0 +1,6 @@
+{:style :community
+ :map {:comma? false
+       :justify? true}
+ :binding {:force-nl? true
+           :justify? true}
+ :fn-map {"defnc" [:arg2-pair {:vector {:wrap? false}}]}}

@@ -1,0 +1,46 @@
+name: Add Summary to CHANGELOG on Issue Close
+
+on:
+  issues:
+    types: [closed]
+
+jobs:
+  generate-changelog:
+    if: contains(github.event.issue.labels.*.name, 'release-summary')
+    name: "Generate Changelog after release"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get Previous Tag
+        run: |
+           PREV_TAG=$(git describe --abbrev=0 --tags "${{ github.ref }}^")
+           echo "::set-env name=baseRef::$PREV_TAG"
+      - name: Generate Changelog
+        uses: ./.github/actions/versioning/
+        id: generate_changelog
+        with:
+          issues: "true"
+          issuesWoLabels: "true"
+          pullRequests: "true"
+          prWoLabels: "true"
+          filterByMilestone: "true"
+          author: "true"
+          compareLink: "true"
+          stripGeneratorNotice: "true"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          addSections: '{"documentation":{"prefix":"**Documentation updates:**","labels":["documentation"]}}'
+      - name: Commit files
+        run: |
+          git config --local user.name ${{ github.actor }}
+          git add CHANGELOG.md && git commit -m 'Updated CHANGELOG.md' && echo "push=1" >> $GITHUB_ENV || echo "No changes to CHANGELOG.md"
+      - name: Push changes  # push the output folder to your repo
+        if: env.push == 1
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
+
+# echo ${{steps.generate_changelog.outputs.changelog}} >> CHANGELOG.md

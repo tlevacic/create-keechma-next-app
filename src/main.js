@@ -32,12 +32,9 @@ export async function createProject(options) {
     targetDirectory: options.projectPath,
   };
 
-  console.log("JOO " + new URL(import.meta.url).pathname);
-
   const templateDir = path.resolve(
     new URL(import.meta.url).pathname,
-    "../../templates",
-    "javascript"
+    "../../templates"
   );
 
   options.templateDirectory = templateDir;
@@ -45,7 +42,7 @@ export async function createProject(options) {
   try {
     await access(templateDir, fs.constants.R_OK);
   } catch (err) {
-    console.error("%s Invalid template name", chalk.red.bold("ERROR"));
+    console.error("%s Template doesn't exists!", chalk.red.bold("ERROR"));
     process.exit(1);
   }
 
